@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundTimer">
+        <attr name="defaultPosition" format="integer"/>
+        <attr name="knobColor" format="color"/>
+        <attr name="lineWidth" format="float"/>
+        <attr name="lineColor" format="color"/>
+    </declare-styleable>
+</resources>
