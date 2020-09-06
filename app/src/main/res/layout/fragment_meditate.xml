@@ -9,11 +9,11 @@
 
     <dev.feiyang.sereneme.CustomViews.RoundTimer
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:knobColor="@color/colorPrimary"
+        android:layout_height="382dp"
         app:defaultPosition="0"
-        app:lineWidth="8.0"
-        app:lineColor="@color/colorPrimary">
-    </dev.feiyang.sereneme.CustomViews.RoundTimer>
+        app:knobColor="@color/colorPrimary"
+        app:lineFillColor="@color/colorPrimary"
+        app:lineFrameColor="@color/grey"
+        app:lineWidth="15.0"></dev.feiyang.sereneme.CustomViews.RoundTimer>
 
 </FrameLayout>

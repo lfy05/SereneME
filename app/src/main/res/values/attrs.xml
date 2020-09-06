@@ -4,6 +4,7 @@
         <attr name="defaultPosition" format="integer"/>
         <attr name="knobColor" format="color"/>
         <attr name="lineWidth" format="float"/>
-        <attr name="lineColor" format="color"/>
+        <attr name="lineFrameColor" format="color"/>
+        <attr name="lineFillColor" format="color"/>
     </declare-styleable>
 </resources>
