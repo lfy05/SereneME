@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -26,9 +28,13 @@ public class RoundTimer extends View {
     private int mKnobCenterY;
     private int mKnobRadius;
     private double mKnobSweepAngle;
+    private int mKnobSweepedCycle;
+
+    private RectF mArcRect;
 
     private Paint mCirclePaint;
     private Paint mKnobPaint;
+    private Paint mSweepArcPaint;
 
     // default constructors
     public RoundTimer(Context context) {
@@ -79,6 +85,15 @@ public class RoundTimer extends View {
                 mXMLAttrs.getFloat(R.styleable.RoundTimer_lineWidth, (float) 8.0));
         mKnobPaint.setColor(mXMLAttrs.getColor(R.styleable.RoundTimer_lineFillColor,
                 ContextCompat.getColor(getContext(), R.color.colorPrimary)));
+
+        mArcRect = new RectF();
+
+        mSweepArcPaint = new Paint();
+        mSweepArcPaint.setStyle(Paint.Style.STROKE);
+        mSweepArcPaint.setColor(mXMLAttrs.getColor(R.styleable.RoundTimer_lineFillColor,
+                ContextCompat.getColor(getContext(), R.color.colorPrimary)));
+        mSweepArcPaint.setStrokeWidth(
+                mXMLAttrs.getFloat(R.styleable.RoundTimer_lineWidth, (float) 8.0));
     }
 
     @Override
@@ -94,6 +109,11 @@ public class RoundTimer extends View {
         mKnobCenterX = mCircleCenterX;
         mKnobCenterY = mCircleCenterY - mCircleRadius;
         mKnobRadius = mCircleRadius / 12;
+
+        mArcRect.set(mCircleCenterX - mCircleRadius,
+                mCircleCenterY - mCircleRadius,
+                mCircleCenterX + mCircleRadius,
+                mCircleCenterY + mCircleRadius);
     }
 
     @Override
@@ -104,6 +124,13 @@ public class RoundTimer extends View {
 
         // draw knob
         canvas.drawCircle(mKnobCenterX, mKnobCenterY, mKnobRadius, mKnobPaint);
+
+        // draw arc
+        Log.d("SereneME Round Timer: ", "mKnobSweepAngle: " + mKnobSweepAngle);
+        if (mKnobSweepedCycle < 1)
+            canvas.drawArc(mArcRect, 270, (float) Math.toDegrees(mKnobSweepAngle), false, mSweepArcPaint);
+        else
+            canvas.drawArc(mArcRect, 270, 360, false, mSweepArcPaint);
     }
 
     @Override
@@ -121,6 +148,8 @@ public class RoundTimer extends View {
                 float y = event.getY();
 
                 // Update angle
+                double prevSweepAngle = mKnobSweepAngle;
+
                 if (x >= mCircleCenterX){
                     // right quadrants
                     if (y <= mCircleCenterY){
@@ -136,9 +165,18 @@ public class RoundTimer extends View {
                         // bottom-left quadrant
                         mKnobSweepAngle = Math.PI + Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY));
                     } else {
+                        // up-left
                         // in this case: Math.toDegrees() return a negative value
                         mKnobSweepAngle = 2 * Math.PI - Math.abs(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY)));
                     }
+                }
+
+                // check rotation cycle
+                if (prevSweepAngle > 6.1 && mKnobSweepAngle < 0.3){
+                    // clockwise increase
+                    mKnobSweepedCycle ++;
+                } else if(prevSweepAngle < 0.3 && mKnobSweepAngle > 6.1 && mKnobSweepedCycle >= 0){
+                    mKnobSweepedCycle --;
                 }
                 updateKnobPosition(mKnobSweepAngle);
                 break;
@@ -154,6 +192,7 @@ public class RoundTimer extends View {
      * @param angle knob sweeping angle in radian
      */
     private void updateKnobPosition(double angle){
+        // update knob
         mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(mKnobSweepAngle));
         mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(mKnobSweepAngle));
     }
