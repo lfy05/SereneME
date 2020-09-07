@@ -121,32 +121,26 @@ public class RoundTimer extends View {
                 float y = event.getY();
 
                 // Update angle
-                /*
-                mKnobSweepAngle = Math.toDegrees(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY)));
-                        updateKnobPosition(mKnobSweepAngle);
-                 */
-
                 if (x >= mCircleCenterX){
                     // right quadrants
                     if (y <= mCircleCenterY){
                         // up-right quadrant
-                        mKnobSweepAngle = Math.toDegrees(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY)));
+                        mKnobSweepAngle = Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY));
                     } else {
                         // bottom-right quadrants
-                        mKnobSweepAngle = 180 + Math.toDegrees(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY)));
+                        mKnobSweepAngle = Math.PI + Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY));
                     }
                 } else {
                     // left quadrants
                     if (y >= mCircleCenterY){
                         // bottom-left quadrant
-                        mKnobSweepAngle = 180 + Math.toDegrees(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY)));
+                        mKnobSweepAngle = Math.PI + Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY));
                     } else {
                         // in this case: Math.toDegrees() return a negative value
-                        mKnobSweepAngle = 360 - Math.abs(Math.toDegrees(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY))));
+                        mKnobSweepAngle = 2 * Math.PI - Math.abs(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY)));
                     }
                 }
                 updateKnobPosition(mKnobSweepAngle);
-                Log.d("SereneME RoundTimer: ", "Current Degrees: " + mKnobSweepAngle);
                 break;
         }
 
@@ -157,10 +151,10 @@ public class RoundTimer extends View {
     /**
      * update knob position variables to match the angle. DOES NOT UPDATE UI, use invalidate() to
      * refresh UI
-     * @param angle knob sweeping angle in degrees
+     * @param angle knob sweeping angle in radian
      */
     private void updateKnobPosition(double angle){
-        mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(Math.toRadians(mKnobSweepAngle % 360)));
-        mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(Math.toRadians(mKnobSweepAngle % 360)));
+        mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(mKnobSweepAngle));
+        mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(mKnobSweepAngle));
     }
 }
