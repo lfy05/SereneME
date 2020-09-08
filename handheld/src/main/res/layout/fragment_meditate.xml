@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/pureWhite"
+    tools:context=".Features.MeditateFragment">
+
+    <dev.feiyang.sereneme.CustomViews.RoundTimer
+        android:layout_width="match_parent"
+        android:layout_height="382dp"
+        app:defaultPosition="0"
+        app:knobColor="@color/colorPrimary"
+        app:lineFillColor="@color/colorPrimary"
+        app:lineFrameColor="@color/grey"
+        app:lineWidth="15.0"></dev.feiyang.sereneme.CustomViews.RoundTimer>
+
+</FrameLayout>

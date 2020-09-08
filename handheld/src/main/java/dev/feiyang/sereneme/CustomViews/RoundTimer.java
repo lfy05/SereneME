@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -28,7 +26,10 @@ public class RoundTimer extends View {
     private int mKnobCenterY;
     private int mKnobRadius;
     private double mKnobSweepAngle;
+    private double mKnobAbsoluteAngle;
     private int mKnobSweepedCycle;
+    private boolean mKnobSweepedCycleChangedFlag;
+    private VelocityTracker mKnobVelocityTracker;
 
     private RectF mArcRect;
 
@@ -116,18 +117,6 @@ public class RoundTimer extends View {
                 mCircleCenterY + mCircleRadius);
     }
 
-    /**
-     * update knob position variables to match the angle. DOES NOT UPDATE UI, use invalidate() to
-     * refresh UI
-     * @param angle knob sweeping angle in radian
-     */
-    private void updateKnobPosition(double angle){
-        // update knob
-        mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(mKnobSweepAngle));
-        mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(mKnobSweepAngle));
-        invalidate();
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -138,11 +127,6 @@ public class RoundTimer extends View {
         canvas.drawCircle(mKnobCenterX, mKnobCenterY, mKnobRadius, mKnobPaint);
 
         // draw arc
-        Log.d("SereneME Round Timer: ", "mKnobSweepAngle: " + mKnobSweepAngle);
-        if (mKnobSweepedCycle < 1)
-            canvas.drawArc(mArcRect, 270, (float) Math.toDegrees(mKnobSweepAngle), false, mSweepArcPaint);
-        else
-            canvas.drawArc(mArcRect, 270, 360, false, mSweepArcPaint);
+        canvas.drawArc(mArcRect, 270, (float) Math.toDegrees(mKnobSweepAngle), false, mSweepArcPaint);
     }
-
 }
