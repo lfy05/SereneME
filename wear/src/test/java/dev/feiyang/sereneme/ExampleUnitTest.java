@@ -1,4 +1,4 @@
-package dev.feiyang.sereneme.wear;
+package dev.feiyang.sereneme;
 
 import org.junit.Test;
 

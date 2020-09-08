@@ -1,4 +1,4 @@
-package dev.feiyang.sereneme.wear;
+package dev.feiyang.sereneme;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("dev.feiyang.sereneme.wear", appContext.getPackageName());
+        assertEquals("dev.feiyang.sereneme", appContext.getPackageName());
     }
 }
