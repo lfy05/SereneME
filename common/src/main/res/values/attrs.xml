@@ -6,5 +6,6 @@
         <attr name="lineWidth" format="float"/>
         <attr name="lineFrameColor" format="color"/>
         <attr name="lineFillColor" format="color"/>
+        <attr name="digitTimerYFromTop" format="integer"/>
     </declare-styleable>
 </resources>

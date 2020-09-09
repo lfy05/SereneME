@@ -27,7 +27,11 @@ public class RoundTimer extends View {
     private int mKnobCenterY;
     private int mKnobRadius;
     private double mKnobSweepAngle;
-    private int mKnobSweepedCycle;
+
+    private Paint mDigitTimerPaint;
+    private int mDigitTimerStartX;
+    private int mDigitTimerStartY;
+    private String mDigitTimer = "";
 
     private RectF mArcRect;
 
@@ -38,7 +42,6 @@ public class RoundTimer extends View {
     // default constructors
     public RoundTimer(Context context) {
         super(context);
-
         init(null);
     }
 
@@ -88,6 +91,13 @@ public class RoundTimer extends View {
                 ContextCompat.getColor(getContext(), R.color.colorPrimary)));
         mSweepArcPaint.setStrokeWidth(
                 mXMLAttrs.getFloat(R.styleable.RoundTimer_lineWidth, (float) 8.0));
+
+        mDigitTimerPaint = new Paint();
+        mDigitTimerPaint.setColor(mXMLAttrs.getColor(R.styleable.RoundTimer_lineFillColor,
+                ContextCompat.getColor(getContext(), R.color.colorPrimary)));
+        mDigitTimerPaint.setTextAlign(Paint.Align.CENTER);
+        mDigitTimerPaint.setTextSize(50);
+        mDigitTimerStartY = mXMLAttrs.getInt(R.styleable.RoundTimer_digitTimerYFromTop, 0);
     }
 
     @Override
@@ -105,10 +115,16 @@ public class RoundTimer extends View {
         mKnobRadius = mCircleRadius / 12;
         updateKnobPosition(mKnobSweepAngle);
 
+        // calculate arc bounds
         mArcRect.set(mCircleCenterX - mCircleRadius,
                 mCircleCenterY - mCircleRadius,
                 mCircleCenterX + mCircleRadius,
                 mCircleCenterY + mCircleRadius);
+
+        // calculate digit timer bounds
+        mDigitTimerStartX = getWidth() / 2;
+        if (mDigitTimerStartY == 0)
+            mDigitTimerStartY = getHeight() / 2;
     }
 
     /**
@@ -120,6 +136,9 @@ public class RoundTimer extends View {
         // update knob
         mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(mKnobSweepAngle));
         mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(mKnobSweepAngle));
+
+        // update digit timer
+        mDigitTimer = (int) (60 * (angle / (2 * Math.PI))) + "mins";
         invalidate();
     }
 
@@ -133,11 +152,9 @@ public class RoundTimer extends View {
         canvas.drawCircle(mKnobCenterX, mKnobCenterY, mKnobRadius, mKnobPaint);
 
         // draw arc
-        Log.d("SereneME Round Timer: ", "mKnobSweepAngle: " + mKnobSweepAngle);
-        if (mKnobSweepedCycle < 1)
-            canvas.drawArc(mArcRect, 270, (float) Math.toDegrees(mKnobSweepAngle), false, mSweepArcPaint);
-        else
-            canvas.drawArc(mArcRect, 270, 360, false, mSweepArcPaint);
-    }
+        canvas.drawArc(mArcRect, 270, (float) Math.toDegrees(mKnobSweepAngle), false, mSweepArcPaint);
 
+        // draw digit timer
+        canvas.drawText(mDigitTimer, mDigitTimerStartX, mDigitTimerStartY, mDigitTimerPaint);
+    }
 }

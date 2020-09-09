@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:defaultPosition="0"
+            app:defaultPosition="3"
             app:knobColor="@color/colorAccent"
             app:lineWidth="8.0"
             app:lineFrameColor="@color/darkerGrey"

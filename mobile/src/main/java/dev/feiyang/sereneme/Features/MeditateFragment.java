@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import dev.feiyang.common.CustomViews.RoundTimer;
 import dev.feiyang.sereneme.R;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -72,21 +73,18 @@ public class MeditateFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+
+
         final KonfettiView konfettiView = getView().findViewById(R.id.konfettiView);
-        konfettiView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                konfettiView.build()
-                        .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-                        .setDirection(0.0, 359.0)
-                        .setSpeed(1f, 5f)
-                        .setFadeOutEnabled(true)
-                        .setTimeToLive(2000L)
-                        .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
-                        .addSizes(new Size(12, 5f))
-                        .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
-                        .streamFor(300, 5000L);
-            }
-        });
+        konfettiView.build()
+                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                .setDirection(0.0, 359.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(2000L)
+                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                .addSizes(new Size(12, 5f))
+                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
+                .streamFor(300, 5000L);
     }
 }
