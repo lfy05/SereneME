@@ -1,20 +1,19 @@
-package dev.feiyang.sereneme.CustomViews;
+package dev.feiyang.common.CustomViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import dev.feiyang.sereneme.R;
+import dev.feiyang.common.R;
+
 
 public class RoundTimer extends View {
     private AttributeSet mAttrs;

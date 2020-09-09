@@ -21,7 +21,9 @@
             android:layout_height="wrap_content"
             android:text="@string/hello_world" />
 
-
+        <dev.feiyang.common.CustomViews.RoundTimer
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </FrameLayout>
 </androidx.wear.widget.BoxInsetLayout>
