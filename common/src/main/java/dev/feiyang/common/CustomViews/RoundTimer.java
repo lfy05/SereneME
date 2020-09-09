@@ -54,12 +54,6 @@ public class RoundTimer extends View {
         init(mAttrs);
     }
 
-    public RoundTimer(Context context, @Nullable AttributeSet mAttrs, int defStyleAttr, int defStyleRes) {
-        super(context, mAttrs, defStyleAttr, defStyleRes);
-        this.mAttrs = mAttrs;
-        init(mAttrs);
-    }
-
     /**
      * Initializes view based on provided attributes
      * @param set attribute set
@@ -84,6 +78,7 @@ public class RoundTimer extends View {
                 mXMLAttrs.getFloat(R.styleable.RoundTimer_lineWidth, (float) 8.0));
         mKnobPaint.setColor(mXMLAttrs.getColor(R.styleable.RoundTimer_lineFillColor,
                 ContextCompat.getColor(getContext(), R.color.colorPrimary)));
+        mKnobSweepAngle = mXMLAttrs.getInt(R.styleable.RoundTimer_defaultPosition, 0);
 
         mArcRect = new RectF();
 
@@ -102,12 +97,13 @@ public class RoundTimer extends View {
         // initialize circle parameters
         this.mCircleCenterX = getWidth() / 2;
         this.mCircleCenterY = getHeight() / 2;
-        this.mCircleRadius = Math.min(getWidth(), getHeight()) / 4;
+        this.mCircleRadius = (int) (Math.min(this.mCircleCenterX, this.mCircleCenterY) * 0.9);
 
         // calculate initial knob position
         mKnobCenterX = mCircleCenterX;
         mKnobCenterY = mCircleCenterY - mCircleRadius;
         mKnobRadius = mCircleRadius / 12;
+        updateKnobPosition(mKnobSweepAngle);
 
         mArcRect.set(mCircleCenterX - mCircleRadius,
                 mCircleCenterY - mCircleRadius,
