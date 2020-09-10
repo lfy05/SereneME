@@ -4,13 +4,13 @@
     <item
         android:id="@+id/navMeditate"
         android:icon="@drawable/meditation"
-        android:title="Meditate" />
+        android:title="@string/meditate" />
     <item
         android:id="@+id/navJournal"
         android:icon="@drawable/journal"
-        android:title="Journal" />
+        android:title="@string/journal" />
     <item
         android:id="@+id/navProfile"
         android:icon="@drawable/profile"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>
