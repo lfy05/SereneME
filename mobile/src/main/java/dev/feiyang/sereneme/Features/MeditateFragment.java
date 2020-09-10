@@ -8,6 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import dev.feiyang.common.CustomViews.RoundTimer;
 import dev.feiyang.sereneme.R;
@@ -20,7 +27,12 @@ import nl.dionsegijn.konfetti.models.Size;
  * Use the {@link MeditateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MeditateFragment extends Fragment {
+public class MeditateFragment extends Fragment{
+
+    private HashMap<Integer, Button> timeButtons = new HashMap<Integer, Button>();
+    private RoundTimer mRoundTimer;
+    private KonfettiView mKonfettiView;
+    private TextView mMsgOnKnob;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,6 +72,8 @@ public class MeditateFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -70,15 +84,52 @@ public class MeditateFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        // link with buttons
+        Button time5 = getView().findViewById(R.id.time5);
+        Button time10 = getView().findViewById(R.id.time10);
+        Button time15 = getView().findViewById(R.id.time15);
+        Button time30 = getView().findViewById(R.id.time30);
+        Button time45 = getView().findViewById(R.id.time45);
+        Button time60 = getView().findViewById(R.id.time60);
+
+        timeButtons.put(5, time5);
+        timeButtons.put(10, time10);
+        timeButtons.put(15, time15);
+        timeButtons.put(30, time30);
+        timeButtons.put(45, time45);
+        timeButtons.put(60, time60);
+
+        mRoundTimer = (RoundTimer) getView().findViewById(R.id.roundTimer);
+        mKonfettiView = getView().findViewById(R.id.konfettiView);
+
+        mMsgOnKnob = (TextView) getView().findViewById(R.id.msgKnob);
+
+        for (int buttonKey: timeButtons.keySet()){
+            timeButtons.get(buttonKey).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Button btn = (Button) view;
+                    mRoundTimer.startTimer(Double.parseDouble((String) btn.getText()));
+                    setExtraElementVisibility(false);
+                    Snackbar.make(getView(),
+                            "A " + btn.getText() + " minutes meditation has started",
+                            Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
-        final KonfettiView konfettiView = getView().findViewById(R.id.konfettiView);
-        final RoundTimer roundTimerView = (RoundTimer) getView().findViewById(R.id.roundTimer);
-        roundTimerView.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
+        mRoundTimer.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
             @Override
             public void onCountDownComplete() {
-                konfettiView.build()
+                mKonfettiView.build()
                         .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                         .setDirection(0.0, 359.0)
                         .setSpeed(1f, 5f)
@@ -86,11 +137,17 @@ public class MeditateFragment extends Fragment {
                         .setTimeToLive(2000L)
                         .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
                         .addSizes(new Size(12, 5f))
-                        .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
+                        .setPosition(-50f, mKonfettiView.getWidth() + 50f, -50f, -50f)
                         .streamFor(300, 5000L);
-                roundTimerView.setDigitTimerText(getResources().getString(R.string.countdownComplete));
+                mRoundTimer.setDigitTimerText(getResources().getString(R.string.countdownComplete));
             }
         });
-        roundTimerView.startTimer(0.5);
+    }
+
+    private void setExtraElementVisibility(boolean visibility){
+        for (int buttonKey: timeButtons.keySet()){
+            timeButtons.get(buttonKey).setVisibility(visibility ? View.VISIBLE : View.GONE);
+        }
+        mMsgOnKnob.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 }
