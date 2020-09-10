@@ -73,18 +73,23 @@ public class MeditateFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
-
         final KonfettiView konfettiView = getView().findViewById(R.id.konfettiView);
-        konfettiView.build()
-                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-                .setDirection(0.0, 359.0)
-                .setSpeed(1f, 5f)
-                .setFadeOutEnabled(true)
-                .setTimeToLive(2000L)
-                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
-                .addSizes(new Size(12, 5f))
-                .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
-                .streamFor(300, 5000L);
+        final RoundTimer roundTimerView = (RoundTimer) getView().findViewById(R.id.roundTimer);
+        roundTimerView.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
+            @Override
+            public void onCountDownComplete() {
+                konfettiView.build()
+                        .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                        .setDirection(0.0, 359.0)
+                        .setSpeed(1f, 5f)
+                        .setFadeOutEnabled(true)
+                        .setTimeToLive(2000L)
+                        .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                        .addSizes(new Size(12, 5f))
+                        .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
+                        .streamFor(300, 5000L);
+            }
+        });
+        roundTimerView.startTimer(0.5);
     }
 }

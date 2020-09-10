@@ -6,6 +6,7 @@ import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import dev.feiyang.common.CustomViews.RoundTimer;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
@@ -19,12 +20,11 @@ public class MainActivity extends WearableActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextView = (TextView) findViewById(R.id.text);
-
         final KonfettiView konfettiView = findViewById(R.id.konfettiView);
-        konfettiView.setOnClickListener(new View.OnClickListener() {
+        final RoundTimer roundTimerView = (RoundTimer) findViewById(R.id.roundTimer);
+        roundTimerView.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
             @Override
-            public void onClick(final View view) {
+            public void onCountDownComplete() {
                 konfettiView.build()
                         .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                         .setDirection(0.0, 359.0)
@@ -37,5 +37,6 @@ public class MainActivity extends WearableActivity {
                         .streamFor(30, 5000L);
             }
         });
+        roundTimerView.startTimer(0.5);
     }
 }

@@ -5,8 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -38,6 +38,12 @@ public class RoundTimer extends View {
     private Paint mCirclePaint;
     private Paint mKnobPaint;
     private Paint mSweepArcPaint;
+
+    private CountDownTimer mCountDownTimer;
+    public interface CountDownCompleteListener{
+        public void onCountDownComplete();
+    }
+    private CountDownCompleteListener mCountDownCompleteListener;
 
     // default constructors
     public RoundTimer(Context context) {
@@ -96,7 +102,7 @@ public class RoundTimer extends View {
         mDigitTimerPaint.setColor(mXMLAttrs.getColor(R.styleable.RoundTimer_lineFillColor,
                 ContextCompat.getColor(getContext(), R.color.colorPrimary)));
         mDigitTimerPaint.setTextAlign(Paint.Align.CENTER);
-        mDigitTimerPaint.setTextSize(50);
+        mDigitTimerPaint.setTextSize(mXMLAttrs.getInteger(R.styleable.RoundTimer_digitTimeFontSize, 70));
         mDigitTimerStartY = mXMLAttrs.getInt(R.styleable.RoundTimer_digitTimerYFromTop, 0);
     }
 
@@ -127,21 +133,6 @@ public class RoundTimer extends View {
             mDigitTimerStartY = getHeight() / 2;
     }
 
-    /**
-     * update knob position variables to match the angle. DOES NOT UPDATE UI, use invalidate() to
-     * refresh UI
-     * @param angle knob sweeping angle in radian
-     */
-    private void updateKnobPosition(double angle){
-        // update knob
-        mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(mKnobSweepAngle));
-        mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(mKnobSweepAngle));
-
-        // update digit timer
-        mDigitTimer = (int) (60 * (angle / (2 * Math.PI))) + "mins";
-        invalidate();
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -157,4 +148,55 @@ public class RoundTimer extends View {
         // draw digit timer
         canvas.drawText(mDigitTimer, mDigitTimerStartX, mDigitTimerStartY, mDigitTimerPaint);
     }
+
+    /**
+     * Start the timer.
+     * If minutes is above 0, countdown, otherwise, behave like a stop watch
+     * @param minutes
+     */
+    public void startTimer(final double minutes){
+        final double mills = minutes * 60000;
+        this.mCountDownTimer = new CountDownTimer((long) mills, 100) {
+            @Override
+            public void onTick(long l) {
+                updateTimer(l);
+                updateKnobPosition(Math.PI * 2 * ((float) l / mills));
+            }
+
+            @Override
+            public void onFinish() {
+                mCountDownCompleteListener.onCountDownComplete();
+            }
+        }.start();
+    }
+
+    /**
+     * Update timer to display time
+     * @param mills time in mills
+     */
+    private void updateTimer(long mills){
+        if (mills <= 60000){
+            mDigitTimer = (int) (mills / 1000) + " seconds";
+        } else {
+            mDigitTimer = (int) (mills / 60000) + " : " + (int) (mills % 60000) / 1000;
+        }
+    }
+
+    /**
+     * update knob position variables to match the angle, and match digital timer with the angle.
+     * @param angle knob sweeping angle in radian
+     */
+    private void updateKnobPosition(double angle){
+        // update knob
+        mKnobSweepAngle = angle % (Math.PI * 2);
+        mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(mKnobSweepAngle));
+        mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(mKnobSweepAngle));
+        invalidate();
+    }
+
+    public void setCountDownCompleteListener(CountDownCompleteListener mCountDownCompleteListener) {
+        this.mCountDownCompleteListener = mCountDownCompleteListener;
+    }
 }
+
+
