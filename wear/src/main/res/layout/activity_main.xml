@@ -18,7 +18,7 @@
             android:id="@+id/roundTimer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:defaultPosition="3"
+            app:defaultPosition="0"
             app:knobColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,7 @@
             app:lineFillColor="@color/colorAccent"
             app:lineFrameColor="@color/darkerGrey"
             app:lineWidth="8.0"
-            app:digitTimeFontSize="30"/>
+            app:digitTimeFontSize="40" />
 
         <nl.dionsegijn.konfetti.KonfettiView
             android:id="@+id/konfettiView"

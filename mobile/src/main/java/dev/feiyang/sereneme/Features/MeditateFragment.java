@@ -88,6 +88,7 @@ public class MeditateFragment extends Fragment {
                         .addSizes(new Size(12, 5f))
                         .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
                         .streamFor(300, 5000L);
+                roundTimerView.setDigitTimerText("Complete!");
             }
         });
         roundTimerView.startTimer(0.5);

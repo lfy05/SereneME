@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -18,6 +19,8 @@ import dev.feiyang.common.R;
 public class RoundTimer extends View {
     private AttributeSet mAttrs;
     private TypedArray mXMLAttrs;
+
+    private boolean mIsTimerOn = false;
 
     private int mCircleCenterX;
     private int mCircleCenterY;
@@ -149,22 +152,68 @@ public class RoundTimer extends View {
         canvas.drawText(mDigitTimer, mDigitTimerStartX, mDigitTimerStartY, mDigitTimerPaint);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (this.mIsTimerOn)
+            return false;
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                /* Check if touching on knob */
+                // if the touch is too far from the knob, ignore it
+                if (Math.sqrt(Math.pow(event.getX() - mKnobCenterX, 2) + Math.pow(event.getY() - mKnobCenterY, 2)) > mKnobRadius + 20.0 )
+                    return false;
+
+            case MotionEvent.ACTION_MOVE:
+                // get motion axis
+                float x = event.getX();
+                float y = event.getY();
+
+                // Update angle
+                if (x >= mCircleCenterX){
+                    // right quadrants
+                    if (y <= mCircleCenterY){
+                        // up-right quadrant
+                        mKnobSweepAngle = Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY));
+                    } else {
+                        // bottom-right quadrants
+                        mKnobSweepAngle = Math.PI + Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY));
+                    }
+                } else {
+                    // left quadrants
+                    if (y >= mCircleCenterY){
+                        // bottom-left quadrant
+                        mKnobSweepAngle = Math.PI + Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY));
+                    } else {
+                        // in this case: Math.toDegrees() return a negative value
+                        mKnobSweepAngle = 2 * Math.PI - Math.abs(Math.atan((x - mCircleCenterX) / -(y - mCircleCenterY)));
+                    }
+                }
+                updateKnobPosition(mKnobSweepAngle);
+                updateDigitTimer((long) (3600000 * (mKnobSweepAngle / (Math.PI * 2))));
+                break;
+        }
+        invalidate();
+        return true;
+    }
+
     /**
      * Start the timer.
      * If minutes is above 0, countdown, otherwise, behave like a stop watch
      * @param minutes
      */
     public void startTimer(final double minutes){
+        this.mIsTimerOn = true;
         final double mills = minutes * 60000;
         this.mCountDownTimer = new CountDownTimer((long) mills, 100) {
             @Override
             public void onTick(long l) {
-                updateTimer(l);
+                updateDigitTimer(l);
                 updateKnobPosition(Math.PI * 2 * ((float) l / mills));
             }
 
             @Override
             public void onFinish() {
+                mIsTimerOn = false;
                 mCountDownCompleteListener.onCountDownComplete();
             }
         }.start();
@@ -174,9 +223,9 @@ public class RoundTimer extends View {
      * Update timer to display time
      * @param mills time in mills
      */
-    private void updateTimer(long mills){
+    private void updateDigitTimer(long mills){
         if (mills <= 60000){
-            mDigitTimer = (int) (mills / 1000) + " seconds";
+            mDigitTimer = "00 : " + (int) (mills / 1000);
         } else {
             mDigitTimer = (int) (mills / 60000) + " : " + (int) (mills % 60000) / 1000;
         }
@@ -194,8 +243,21 @@ public class RoundTimer extends View {
         invalidate();
     }
 
+    /**
+     * Set callback when timer finishes
+     * @param mCountDownCompleteListener
+     */
     public void setCountDownCompleteListener(CountDownCompleteListener mCountDownCompleteListener) {
         this.mCountDownCompleteListener = mCountDownCompleteListener;
+    }
+
+    /**
+     * Set digital timer text. ONLY WORKS when timer is not on
+     * @param mDigitTimer text to be displayed at digital timer position
+     */
+    public void setDigitTimerText(String mDigitTimer) {
+        this.mDigitTimer = mDigitTimer;
+        invalidate();
     }
 }
 

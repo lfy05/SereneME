@@ -11,7 +11,7 @@ import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
-public class MainActivity extends WearableActivity {
+public class MainActivity extends WearableActivity{
 
     private TextView mTextView;
 
@@ -20,6 +20,7 @@ public class MainActivity extends WearableActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // setting up timer and confetti
         final KonfettiView konfettiView = findViewById(R.id.konfettiView);
         final RoundTimer roundTimerView = (RoundTimer) findViewById(R.id.roundTimer);
         roundTimerView.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
@@ -37,6 +38,5 @@ public class MainActivity extends WearableActivity {
                         .streamFor(30, 5000L);
             }
         });
-        roundTimerView.startTimer(0.5);
     }
 }
