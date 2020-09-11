@@ -1,0 +1,52 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4b879abc3d8c24d1ac90df725fc92d7a",
+    "entities": [
+      {
+        "tableName": "MeditationRecord",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mID` INTEGER NOT NULL, `Date` TEXT, `Length` INTEGER NOT NULL, `Score` INTEGER NOT NULL, PRIMARY KEY(`mID`))",
+        "fields": [
+          {
+            "fieldPath": "mID",
+            "columnName": "mID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mDate",
+            "columnName": "Date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mLength",
+            "columnName": "Length",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mScore",
+            "columnName": "Score",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mID"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b879abc3d8c24d1ac90df725fc92d7a')"
+    ]
+  }
+}

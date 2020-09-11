@@ -196,9 +196,6 @@ public class RoundTimer extends View {
                 updateKnobPosition(mKnobSweepAngle);
                 updateDigitTimer((long) (3600000 * (mKnobSweepAngle / (Math.PI * 2))));
                 break;
-
-            case MotionEvent.ACTION_UP:
-                mActionUpListener.onActionUp(mKnobSweepAngle);
         }
         invalidate();
         return true;
