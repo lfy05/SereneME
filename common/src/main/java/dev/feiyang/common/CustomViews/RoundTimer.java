@@ -1,5 +1,6 @@
 package dev.feiyang.common.CustomViews;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -46,7 +47,11 @@ public class RoundTimer extends View {
     public interface CountDownCompleteListener{
         public void onCountDownComplete();
     }
+    public interface ActionUpListener{
+        public void onActionUp(double knobSweepAngle);
+    }
     private CountDownCompleteListener mCountDownCompleteListener;
+    private ActionUpListener mActionUpListener;
 
     // default constructors
     public RoundTimer(Context context) {
@@ -191,6 +196,9 @@ public class RoundTimer extends View {
                 updateKnobPosition(mKnobSweepAngle);
                 updateDigitTimer((long) (3600000 * (mKnobSweepAngle / (Math.PI * 2))));
                 break;
+
+            case MotionEvent.ACTION_UP:
+                mActionUpListener.onActionUp(mKnobSweepAngle);
         }
         invalidate();
         return true;
@@ -251,6 +259,10 @@ public class RoundTimer extends View {
         this.mCountDownCompleteListener = mCountDownCompleteListener;
     }
 
+    public void setActionUpListener(ActionUpListener mActionUpListener) {
+        this.mActionUpListener = mActionUpListener;
+    }
+
     /**
      * Set digital timer text. ONLY WORKS when timer is not on
      * @param mDigitTimer text to be displayed at digital timer position
@@ -258,6 +270,10 @@ public class RoundTimer extends View {
     public void setDigitTimerText(String mDigitTimer) {
         this.mDigitTimer = mDigitTimer;
         invalidate();
+    }
+
+    public double getKnobSweepAngle() {
+        return mKnobSweepAngle;
     }
 }
 

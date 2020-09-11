@@ -10,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.Toast;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import dev.feiyang.common.CustomViews.RoundTimer;
 import dev.feiyang.sereneme.R;
@@ -72,8 +70,6 @@ public class MeditateFragment extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
@@ -94,6 +90,7 @@ public class MeditateFragment extends Fragment{
         Button time30 = getView().findViewById(R.id.time30);
         Button time45 = getView().findViewById(R.id.time45);
         Button time60 = getView().findViewById(R.id.time60);
+        Button start = getView().findViewById(R.id.buttonStart);
 
         timeButtons.put(5, time5);
         timeButtons.put(10, time10);
@@ -101,6 +98,7 @@ public class MeditateFragment extends Fragment{
         timeButtons.put(30, time30);
         timeButtons.put(45, time45);
         timeButtons.put(60, time60);
+        timeButtons.put(-1, start);
 
         mRoundTimer = (RoundTimer) getView().findViewById(R.id.roundTimer);
         mKonfettiView = getView().findViewById(R.id.konfettiView);
@@ -114,17 +112,13 @@ public class MeditateFragment extends Fragment{
                     Button btn = (Button) view;
                     mRoundTimer.startTimer(Double.parseDouble((String) btn.getText()));
                     setExtraElementVisibility(false);
-                    Snackbar.make(getView(),
-                            "A " + btn.getText() + " minutes meditation has started",
-                            Snackbar.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),
+                            "A meditation of " + btn.getText() + " has started ",
+                            Toast.LENGTH_LONG)
+                            .show();
                 }
             });
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         mRoundTimer.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
             @Override
@@ -142,6 +136,24 @@ public class MeditateFragment extends Fragment{
                 mRoundTimer.setDigitTimerText(getResources().getString(R.string.countdownComplete));
             }
         });
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                double timeSet = 60 * mRoundTimer.getKnobSweepAngle() / (Math.PI * 2);
+                mRoundTimer.startTimer(timeSet);
+                setExtraElementVisibility(false);
+                Toast.makeText(getContext(),
+                        "A meditation of " + (int) timeSet + " has started ",
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void setExtraElementVisibility(boolean visibility){
