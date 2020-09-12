@@ -107,10 +107,11 @@ public class MeditateFragment extends Fragment{
                         .streamFor(300, 5000L);
                 mRoundTimer.setDigitTimerText(getContext().getString(R.string.countdownComplete));
                 MeditationRecord record = new MeditationRecord();
+                record.mID = (int) (Math.random() * 10000000);
                 record.mLength = (int) minutes;
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
                 LocalDateTime now = LocalDateTime.now();
-                record.mDate = dtf.format(now).replaceAll("\\s+", "");
+                record.mDate = dtf.format(now);
                 record.mScore = 100;
                 mJournalVM.addRecords(record);
             }

@@ -58,4 +58,8 @@ public class MeditationRecordsRVAdapter extends RecyclerView.Adapter<MeditationR
             return 0;
         return meditationRecords.size();
     }
+
+    public void setMeditationRecords(List<MeditationRecord> meditationRecords) {
+        this.meditationRecords = meditationRecords;
+    }
 }

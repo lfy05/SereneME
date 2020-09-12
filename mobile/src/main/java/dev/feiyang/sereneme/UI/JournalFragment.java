@@ -23,7 +23,7 @@ import dev.feiyang.sereneme.R;
 public class JournalFragment extends Fragment {
     private JournalFragmentVM mJournalVM;
     private RecyclerView mRecordRecyclerView;
-    private RecyclerView.Adapter mRRVAdapter;
+    private MeditationRecordsRVAdapter mRRVAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class JournalFragment extends Fragment {
         mJournalVM.getLiveRecords().observe(this, new Observer<List<MeditationRecord>>() {
             @Override
             public void onChanged(List<MeditationRecord> meditationRecords) {
+                mRRVAdapter.setMeditationRecords(meditationRecords);
                 mRRVAdapter.notifyDataSetChanged();
             }
         });
