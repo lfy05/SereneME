@@ -1,4 +1,4 @@
-package dev.feiyang.sereneme.Features;
+package dev.feiyang.sereneme.UI;
 
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +17,7 @@ import dev.feiyang.sereneme.R;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class MeditateFragmentTest {

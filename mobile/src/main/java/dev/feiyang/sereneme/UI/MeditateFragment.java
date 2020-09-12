@@ -1,9 +1,11 @@
-package dev.feiyang.sereneme.Features;
+package dev.feiyang.sereneme.UI;
 
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +14,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import dev.feiyang.common.CustomViews.RoundTimer;
+import dev.feiyang.sereneme.Data.JournalFragmentVM;
+import dev.feiyang.sereneme.Data.MeditationRecord;
 import dev.feiyang.sereneme.R;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 public class MeditateFragment extends Fragment{
-
+    private JournalFragmentVM mJournalVM;
     private HashMap<Integer, Button> timeButtons = new HashMap<Integer, Button>();
     private RoundTimer mRoundTimer;
     private KonfettiView mKonfettiView;
@@ -30,6 +36,12 @@ public class MeditateFragment extends Fragment{
 
     public MeditateFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mJournalVM = new ViewModelProvider(getActivity()).get(JournalFragmentVM.class);
     }
 
     @Override
@@ -82,7 +94,7 @@ public class MeditateFragment extends Fragment{
 
         mRoundTimer.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
             @Override
-            public void onCountDownComplete() {
+            public void onCountDownComplete(double minutes) {
                 mKonfettiView.build()
                         .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                         .setDirection(0.0, 359.0)
@@ -93,7 +105,14 @@ public class MeditateFragment extends Fragment{
                         .addSizes(new Size(12, 5f))
                         .setPosition(-50f, mKonfettiView.getWidth() + 50f, -50f, -50f)
                         .streamFor(300, 5000L);
-                mRoundTimer.setDigitTimerText(getResources().getString(R.string.countdownComplete));
+                mRoundTimer.setDigitTimerText(getContext().getString(R.string.countdownComplete));
+                MeditationRecord record = new MeditationRecord();
+                record.mLength = (int) minutes;
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                LocalDateTime now = LocalDateTime.now();
+                record.mDate = dtf.format(now).replaceAll("\\s+", "");
+                record.mScore = 100;
+                mJournalVM.addRecords(record);
             }
         });
 
@@ -109,11 +128,6 @@ public class MeditateFragment extends Fragment{
                         .show();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void setExtraElementVisibility(boolean visibility){

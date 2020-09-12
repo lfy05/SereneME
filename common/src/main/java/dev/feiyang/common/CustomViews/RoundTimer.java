@@ -45,7 +45,7 @@ public class RoundTimer extends View {
 
     private CountDownTimer mCountDownTimer;
     public interface CountDownCompleteListener{
-        public void onCountDownComplete();
+        public void onCountDownComplete(double minutes);
     }
     public interface ActionUpListener{
         public void onActionUp(double knobSweepAngle);
@@ -219,7 +219,7 @@ public class RoundTimer extends View {
             @Override
             public void onFinish() {
                 mIsTimerOn = false;
-                mCountDownCompleteListener.onCountDownComplete();
+                mCountDownCompleteListener.onCountDownComplete(minutes);
             }
         }.start();
     }

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "MEDITATION_RECORDS")
 public class MeditationRecord {
     @PrimaryKey
     public int mID;

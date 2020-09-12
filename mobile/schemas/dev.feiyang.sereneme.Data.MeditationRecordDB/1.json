@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4b879abc3d8c24d1ac90df725fc92d7a",
+    "identityHash": "3dd4851f753c95a99aebac5e3541ae67",
     "entities": [
       {
-        "tableName": "MeditationRecord",
+        "tableName": "MEDITATION_RECORDS",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mID` INTEGER NOT NULL, `Date` TEXT, `Length` INTEGER NOT NULL, `Score` INTEGER NOT NULL, PRIMARY KEY(`mID`))",
         "fields": [
           {
@@ -46,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b879abc3d8c24d1ac90df725fc92d7a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3dd4851f753c95a99aebac5e3541ae67')"
     ]
   }
 }

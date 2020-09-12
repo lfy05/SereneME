@@ -10,13 +10,13 @@ import java.util.List;
 
 @Dao
 public interface MeditationDAO {
-    @Query("SELECT * FROM MeditationRecord")
+    @Query("SELECT * FROM MEDITATION_RECORDS")
     List<MeditationRecord> getAllRecords();
 
-    @Query("SELECT * FROM MeditationRecord WHERE mID LIKE :ID")
+    @Query("SELECT * FROM MEDITATION_RECORDS WHERE mID LIKE :ID")
     MeditationRecord getRecordByID(int ID);
 
-    @Query("SELECT * FROM MeditationRecord")
+    @Query("SELECT * FROM MEDITATION_RECORDS")
     LiveData<List<MeditationRecord>> loadAllRecords();
 
     @Insert
