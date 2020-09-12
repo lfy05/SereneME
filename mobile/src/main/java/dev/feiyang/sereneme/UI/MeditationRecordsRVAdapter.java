@@ -46,7 +46,7 @@ public class MeditationRecordsRVAdapter extends RecyclerView.Adapter<MeditationR
 
     @Override
     public void onBindViewHolder(@NonNull MeditationRecordVH holder, int position) {
-        MeditationRecord currentRecord = meditationRecords.get(position);
+        MeditationRecord currentRecord = meditationRecords.get(meditationRecords.size() - (position + 1));
         holder.mDate.setText(currentRecord.mDate);
         holder.mLength.setText("" + currentRecord.mLength);
         holder.mScore.setText(mContext.getResources().getString(R.string.focusScore) + currentRecord.mScore);

@@ -54,6 +54,4 @@ public class JournalFragment extends Fragment {
         mRRVAdapter = new MeditationRecordsRVAdapter(mJournalVM.getLiveRecords().getValue(), getContext());
         mRecordRecyclerView.setAdapter(mRRVAdapter);
     }
-
-
 }

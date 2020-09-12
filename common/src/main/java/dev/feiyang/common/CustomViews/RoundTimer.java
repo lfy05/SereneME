@@ -50,8 +50,12 @@ public class RoundTimer extends View {
     public interface ActionUpListener{
         public void onActionUp(double knobSweepAngle);
     }
+    public interface ActionDownListener{
+        public void onActionDown(double knobSweepAngle);
+    }
     private CountDownCompleteListener mCountDownCompleteListener;
     private ActionUpListener mActionUpListener;
+    private ActionDownListener mActionDownListener;
 
     // default constructors
     public RoundTimer(Context context) {
@@ -168,6 +172,11 @@ public class RoundTimer extends View {
                 if (Math.sqrt(Math.pow(event.getX() - mKnobCenterX, 2) + Math.pow(event.getY() - mKnobCenterY, 2)) > mKnobRadius + 20.0 )
                     return false;
 
+                if (mActionDownListener != null){
+                    mActionDownListener.onActionDown(mKnobSweepAngle);
+                    return true;
+                }
+
             case MotionEvent.ACTION_MOVE:
                 // get motion axis
                 float x = event.getX();
@@ -258,6 +267,10 @@ public class RoundTimer extends View {
 
     public void setActionUpListener(ActionUpListener mActionUpListener) {
         this.mActionUpListener = mActionUpListener;
+    }
+
+    public void setActionDownListener(ActionDownListener mActionDownListener) {
+        this.mActionDownListener = mActionDownListener;
     }
 
     /**
