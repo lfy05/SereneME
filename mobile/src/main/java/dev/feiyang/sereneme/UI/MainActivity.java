@@ -1,4 +1,4 @@
-package dev.feiyang.sereneme.Features;
+package dev.feiyang.sereneme.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -8,7 +8,6 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import dev.feiyang.sereneme.R;
 

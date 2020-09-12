@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/pureWhite"
-    tools:context=".Features.MeditateFragment">
+    tools:context=".UI.MeditateFragment">
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/konfettiView"
@@ -35,22 +35,22 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="74dp"
-        android:layout_marginTop="80dp"
         android:background="@drawable/round_button"
         android:text="5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roundTimer" />
+        app:layout_constraintTop_toTopOf="@+id/time10" />
 
     <Button
         android:id="@+id/time10"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="56dp"
         android:background="@drawable/round_button"
         android:text="10"
         app:layout_constraintEnd_toStartOf="@+id/time15"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/time5"
         app:layout_constraintTop_toBottomOf="@+id/roundTimer" />
 
@@ -58,12 +58,11 @@
         android:id="@+id/time15"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="80dp"
         android:layout_marginEnd="74dp"
         android:background="@drawable/round_button"
         android:text="15"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roundTimer" />
+        app:layout_constraintTop_toTopOf="@+id/time10" />
 
     <Button
         android:id="@+id/time30"
@@ -81,11 +80,12 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="56dp"
         android:background="@drawable/round_button"
         android:text="45"
         app:layout_constraintEnd_toStartOf="@+id/time60"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/time30"
         app:layout_constraintTop_toBottomOf="@+id/time10" />
 
@@ -108,6 +108,7 @@
         android:text="@string/start"
         app:layout_constraintBottom_toTopOf="@+id/msgKnob"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time45" />
 

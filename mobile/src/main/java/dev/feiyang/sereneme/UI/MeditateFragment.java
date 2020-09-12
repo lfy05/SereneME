@@ -1,9 +1,11 @@
-package dev.feiyang.sereneme.Features;
+package dev.feiyang.sereneme.UI;
 
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,64 +14,34 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import dev.feiyang.common.CustomViews.RoundTimer;
+import dev.feiyang.sereneme.Data.JournalFragmentVM;
+import dev.feiyang.sereneme.Data.MeditationRecord;
 import dev.feiyang.sereneme.R;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MeditateFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MeditateFragment extends Fragment{
-
+    private JournalFragmentVM mJournalVM;
     private HashMap<Integer, Button> timeButtons = new HashMap<Integer, Button>();
     private RoundTimer mRoundTimer;
     private KonfettiView mKonfettiView;
     private TextView mMsgOnKnob;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public MeditateFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MeditateFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MeditateFragment newInstance(String param1, String param2) {
-        MeditateFragment fragment = new MeditateFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        mJournalVM = new ViewModelProvider(getActivity()).get(JournalFragmentVM.class);
     }
 
     @Override
@@ -122,7 +94,7 @@ public class MeditateFragment extends Fragment{
 
         mRoundTimer.setCountDownCompleteListener(new RoundTimer.CountDownCompleteListener() {
             @Override
-            public void onCountDownComplete() {
+            public void onCountDownComplete(double minutes) {
                 mKonfettiView.build()
                         .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                         .setDirection(0.0, 359.0)
@@ -133,7 +105,15 @@ public class MeditateFragment extends Fragment{
                         .addSizes(new Size(12, 5f))
                         .setPosition(-50f, mKonfettiView.getWidth() + 50f, -50f, -50f)
                         .streamFor(300, 5000L);
-                mRoundTimer.setDigitTimerText(getResources().getString(R.string.countdownComplete));
+                mRoundTimer.setDigitTimerText(getContext().getString(R.string.countdownComplete));
+                MeditationRecord record = new MeditationRecord();
+                record.mID = (int) (Math.random() * 10000000);
+                record.mLength = (int) minutes;
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                LocalDateTime now = LocalDateTime.now();
+                record.mDate = dtf.format(now);
+                record.mScore = 100;
+                mJournalVM.addRecords(record);
             }
         });
 
@@ -149,11 +129,6 @@ public class MeditateFragment extends Fragment{
                         .show();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void setExtraElementVisibility(boolean visibility){

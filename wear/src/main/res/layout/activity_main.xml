@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultPosition="0"
+            app:digitTimeFontSize="40"
             app:knobColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -26,17 +27,84 @@
             app:layout_constraintTop_toTopOf="parent"
             app:lineFillColor="@color/colorAccent"
             app:lineFrameColor="@color/darkerGrey"
-            app:lineWidth="8.0"
-            app:digitTimeFontSize="40" />
+            app:lineWidth="8.0" />
 
         <nl.dionsegijn.konfetti.KonfettiView
             android:id="@+id/konfettiView"
-            android:layout_width="318dp"
-            android:layout_height="321dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintHorizontal_bias="0.523"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/time5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/round_button_wear"
+            android:text="5"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/time15"
+            app:layout_constraintEnd_toStartOf="@+id/time15"
+            app:layout_constraintHorizontal_bias="0.704"
+            app:layout_constraintStart_toStartOf="@+id/roundTimer"
+            app:layout_constraintTop_toTopOf="@+id/time15"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/time15"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/round_button_wear"
+            android:text="15"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/roundTimer"
+            app:layout_constraintStart_toStartOf="@+id/roundTimer"
+            app:layout_constraintTop_toTopOf="@+id/roundTimer"
+            app:layout_constraintVertical_bias="0.423" />
+
+        <Button
+            android:id="@+id/time30"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/round_button_wear"
+            android:text="30"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/time15"
+            app:layout_constraintEnd_toEndOf="@+id/roundTimer"
+            app:layout_constraintHorizontal_bias="0.306"
+            app:layout_constraintStart_toEndOf="@+id/time15"
+            app:layout_constraintTop_toTopOf="@+id/time15"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/start_button_wear"
+            android:text="@string/start"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/roundTimer"
+            app:layout_constraintEnd_toEndOf="@+id/roundTimer"
+            app:layout_constraintStart_toStartOf="@+id/roundTimer"
+            app:layout_constraintTop_toTopOf="@+id/roundTimer"
+            app:layout_constraintVertical_bias="0.793" />
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/start_button_wear"
+            android:text="@string/reset"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/roundTimer"
+            app:layout_constraintEnd_toEndOf="@+id/roundTimer"
+            app:layout_constraintStart_toStartOf="@+id/roundTimer"
+            app:layout_constraintTop_toTopOf="@+id/roundTimer"
+            app:layout_constraintVertical_bias="0.793" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

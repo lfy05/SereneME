@@ -11,6 +11,15 @@ android {
         versionCode 1
         versionName "1.0"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"]
+            }
+        }
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,7 +43,16 @@ dependencies {
     implementation 'nl.dionsegijn:konfetti:1.2.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.0"
 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    implementation "androidx.room:room-runtime:2.2.5"
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
+
+
+
     testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-core:2.+'
+    androidTestImplementation "org.mockito:mockito-core:2.+"
     androidTestImplementation 'androidx.test:core:1.0.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -47,5 +65,4 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0'
 
     implementation project (":common")
-
 }
