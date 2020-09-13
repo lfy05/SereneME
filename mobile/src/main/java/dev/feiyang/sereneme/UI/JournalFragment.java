@@ -13,6 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.wearable.DataClient;
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.Wearable;
+
 import java.util.List;
 
 import dev.feiyang.sereneme.Data.JournalFragmentVM;
@@ -20,10 +28,11 @@ import dev.feiyang.sereneme.Data.MeditationRecord;
 import dev.feiyang.sereneme.R;
 
 
-public class JournalFragment extends Fragment {
+public class JournalFragment extends Fragment{
     private JournalFragmentVM mJournalVM;
     private RecyclerView mRecordRecyclerView;
     private MeditationRecordsRVAdapter mRRVAdapter;
+    private static final String RECORD_KEY = "dev.feiyang.sereneme.records";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,5 +62,10 @@ public class JournalFragment extends Fragment {
         mRecordRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRRVAdapter = new MeditationRecordsRVAdapter(mJournalVM.getLiveRecords().getValue(), getContext());
         mRecordRecyclerView.setAdapter(mRRVAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

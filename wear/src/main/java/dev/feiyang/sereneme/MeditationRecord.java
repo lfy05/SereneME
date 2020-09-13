@@ -1,24 +1,13 @@
-package dev.feiyang.sereneme.Data;
+package dev.feiyang.sereneme;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-@Entity(tableName = "MEDITATION_RECORDS")
 public class MeditationRecord {
-    @PrimaryKey
     public int mID;
-
-    @ColumnInfo(name = "Date")
     public String mDate;
-
-    @ColumnInfo(name = "Length")
     public int mLength;
-
-    @ColumnInfo(name = "Score")
     public int mScore;
 
     public byte[] getBytes(){

@@ -113,7 +113,7 @@ public class MeditateFragment extends Fragment{
                 LocalDateTime now = LocalDateTime.now();
                 record.mDate = dtf.format(now);
                 record.mScore = 100;
-                mJournalVM.addRecords(record);
+                mJournalVM.addLocalRecords(record);
             }
         });
 
