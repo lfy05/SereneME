@@ -3,7 +3,9 @@ package dev.feiyang.sereneme;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
+import android.support.wearable.input.RotaryEncoder;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -89,6 +91,25 @@ public class MainActivity extends WearableActivity{
                 setExtraElementVisibility(false);
             }
         });
+
+        Log.d("SereneME", "Attach Listener");
+
+        roundTimerView.setOnGenericMotionListener(new View.OnGenericMotionListener() {
+            @Override
+            public boolean onGenericMotion(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_SCROLL
+                        && RotaryEncoder.isFromRotaryEncoder(motionEvent)){
+                    setExtraElementVisibility(false);
+                    float delta = (float) (-RotaryEncoder.getRotaryAxisValue(motionEvent) * 0.7);
+                    roundTimerView.updateKnobPosition(roundTimerView.getKnobSweepAngle() +
+                            delta);
+                    roundTimerView.syncDigitTimer();
+                    return true;
+                }
+                return false;
+            }
+        });
+        roundTimerView.requestFocus();
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override

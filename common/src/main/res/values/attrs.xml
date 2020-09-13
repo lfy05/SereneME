@@ -8,7 +8,6 @@
         <attr name="lineFillColor" format="color"/>
         <attr name="digitTimerYFromTop" format="integer"/>
         <attr name="digitTimeFontSize" format="integer"/>
-
         <attr name="timeButtonOutlineWidth" format="integer"/>
     </declare-styleable>
 </resources>

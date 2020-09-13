@@ -1,6 +1,5 @@
 package dev.feiyang.common.CustomViews;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -13,6 +12,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import java.text.DecimalFormat;
 
 import dev.feiyang.common.R;
 
@@ -36,6 +37,8 @@ public class RoundTimer extends View {
     private int mDigitTimerStartX;
     private int mDigitTimerStartY;
     private String mDigitTimer = "";
+    private DecimalFormat mDigitSecondFormat;
+    private DecimalFormat mDigitMinuteFormat;
 
     private RectF mArcRect;
 
@@ -169,7 +172,7 @@ public class RoundTimer extends View {
             case MotionEvent.ACTION_DOWN:
                 /* Check if touching on knob */
                 // if the touch is too far from the knob, ignore it
-                if (Math.sqrt(Math.pow(event.getX() - mKnobCenterX, 2) + Math.pow(event.getY() - mKnobCenterY, 2)) > mKnobRadius + 20.0 )
+                if (Math.sqrt(Math.pow(event.getX() - mKnobCenterX, 2) + Math.pow(event.getY() - mKnobCenterY, 2)) > mKnobRadius + 40.0 )
                     return false;
 
                 if (mActionDownListener != null){
@@ -239,18 +242,23 @@ public class RoundTimer extends View {
      */
     private void updateDigitTimer(long mills){
         if (mills <= 60000){
-            mDigitTimer = "00 : " + (int) (mills / 1000);
+            mDigitTimer = String.format("00 : %02d", (int) mills / 1000);
         } else {
-            mDigitTimer = (int) (mills / 60000) + " : " + (int) (mills % 60000) / 1000;
+            mDigitTimer = String.format("%02d : %02d", (int) (mills / 60000), (int)((mills % 60000) / 1000));
         }
+    }
+
+    public void syncDigitTimer(){
+        updateDigitTimer((long) (3600000 * (mKnobSweepAngle / (Math.PI * 2))));
     }
 
     /**
      * update knob position variables to match the angle, and match digital timer with the angle.
      * @param angle knob sweeping angle in radian
      */
-    private void updateKnobPosition(double angle){
+    public void updateKnobPosition(double angle){
         // update knob
+        if (angle < 0) return;
         mKnobSweepAngle = angle % (Math.PI * 2);
         mKnobCenterX = (int) (mCircleCenterX + mCircleRadius * Math.sin(mKnobSweepAngle));
         mKnobCenterY = (int) (mCircleCenterY - mCircleRadius * Math.cos(mKnobSweepAngle));
