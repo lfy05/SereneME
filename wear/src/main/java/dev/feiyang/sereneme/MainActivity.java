@@ -40,7 +40,14 @@ public class MainActivity extends WearableActivity{
     private DataClient mDataClient;
     private SensorManager sensorManager;
     private SensorEventListener mHeartRateListener;
+    private int mHeartRateMean;
+    private int mHeartRateMeasureCount;
+    private int mHeartRateFlucThreshold = 5;
+
     private SensorEventListener mAccelerometerListener;
+    private static int  MOVEMENT_THRESHOLD = 2;
+
+    private double mMeditationSessionScore = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +107,10 @@ public class MainActivity extends WearableActivity{
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
                 LocalDateTime now = LocalDateTime.now();
                 record.mDate = dtf.format(now);
-                record.mScore = 100;
+                record.mScore = (int) (mMeditationSessionScore / minutes);
+                if(record.mScore <= 0){
+                    record.mScore = 1;
+                }
                 record.mID = (int) (Math.random() * 10000000);
                 record.mLength = (int) minutes;
 
@@ -164,6 +174,15 @@ public class MainActivity extends WearableActivity{
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
                 Log.d(TAG, "HeartRate Event Occurred: " + sensorEvent.values[0]);
+                if (sensorEvent.values[0] <= 0) return;
+                mHeartRateMeasureCount++;
+                double curHeartRate = sensorEvent.values[0];
+                mHeartRateMean = (int) ((mHeartRateMean * mHeartRateMeasureCount + curHeartRate) / mHeartRateMeasureCount);
+
+                if (Math.abs(curHeartRate - mHeartRateMean) >= mHeartRateFlucThreshold
+                        && mMeditationSessionScore > 0)
+                    mMeditationSessionScore -= 0.5;
+
             }
 
             @Override
@@ -175,7 +194,29 @@ public class MainActivity extends WearableActivity{
         mAccelerometerListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
-                Log.d(TAG, "Accelerometer event occured: " + sensorEvent.values);
+                int x = (int) sensorEvent.values[0];
+                int y = (int) sensorEvent.values[1];
+                int z = (int) sensorEvent.values[2];
+                Log.d(TAG, "Accelerometer event occurred - x: " + x
+                        + " y :" + y + " z : " + z);
+
+                if (Math.abs(sensorEvent.values[0]) >= MOVEMENT_THRESHOLD
+                        || Math.abs(sensorEvent.values[1]) >= MOVEMENT_THRESHOLD
+                        || Math.abs(sensorEvent.values[2]) >= MOVEMENT_THRESHOLD){
+                    if (x > y && x > z){
+                        Log.d(TAG,"Meditation Score Deduction due to Accelerometer Event: " + Math.min(x, 5) / 5.0);
+                        mMeditationSessionScore -= Math.max(x, 5) / 5.0;
+                    } else if (y > x && y > z) {
+                        Log.d(TAG,"Meditation Score Deduction due to Accelerometer Event: " + Math.min(x, 5) / 5.0);
+                        mMeditationSessionScore -= Math.max(y, 5) / 5.0;
+                    } else {
+                        Log.d(TAG,"Meditation Score Deduction due to Accelerometer Event: " + Math.min(x, 5) / 5.0);
+                        mMeditationSessionScore -= Math.max(z, 5) / 5.0;
+                    }
+
+                }
+
+
             }
 
             @Override
@@ -192,7 +233,6 @@ public class MainActivity extends WearableActivity{
     }
 
     private void startSensors(){
-
         // prepare sensor accesses
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -206,7 +246,7 @@ public class MainActivity extends WearableActivity{
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
 
-        Sensor defaultAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor defaultAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         if (defaultAccelerometer != null){
             Log.d(TAG, "Accelerometer Found");
             sensorManager.registerListener(mAccelerometerListener,
