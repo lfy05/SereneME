@@ -7,12 +7,14 @@
     android:background="@color/pureDark"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
-    tools:deviceIds="wear">
+    tools:deviceIds="wear"
+    app:boxedEdges="all">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding">
+        android:padding="@dimen/inner_frame_layout_padding"
+        android:fitsSystemWindows="true">
 
         <dev.feiyang.common.CustomViews.RoundTimer
             android:id="@+id/roundTimer"
@@ -22,7 +24,7 @@
             android:focusableInTouchMode="true"
             android:focusedByDefault="true"
             app:defaultPosition="0"
-            app:digitTimeFontSize="70"
+            app:digitTimeFontSize="50"
             app:knobColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
