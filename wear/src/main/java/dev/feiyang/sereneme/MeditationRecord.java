@@ -5,13 +5,13 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class MeditationRecord {
-    public int mID;
+    public long mID;
     public String mDate;
     public int mLength;
     public int mScore;
 
     public byte[] getBytes(){
-        byte[] idBytes = ByteBuffer.allocate(4).putInt(mID).array();
+        byte[] idBytes = ByteBuffer.allocate(8).putLong(mID).array();
         // this length refers to the time span of the meditation
         byte[] lengthBytes = ByteBuffer.allocate(4).putInt(mLength).array();
         byte[] scoreBytes = ByteBuffer.allocate(4).putInt(mScore).array();
@@ -34,10 +34,10 @@ public class MeditationRecord {
             return null;
 
         MeditationRecord record = new MeditationRecord();
-        record.mID = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 1, 5)).getInt();
-        record.mLength = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 5, 9)).getInt();
-        record.mScore = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 9, 13)).getInt();
-        record.mDate = new String(Arrays.copyOfRange(bytes, 13, bytes.length - 1));
+        record.mID = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 1, 9)).getLong();
+        record.mLength = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 9, 13)).getInt();
+        record.mScore = ByteBuffer.wrap(Arrays.copyOfRange(bytes, 13, 17)).getInt();
+        record.mDate = new String(Arrays.copyOfRange(bytes, 17, bytes.length - 1));
         return record;
     }
 }

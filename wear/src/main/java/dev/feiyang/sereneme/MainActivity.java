@@ -8,6 +8,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.input.RotaryEncoder;
 import android.util.Log;
@@ -15,6 +17,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.wear.ambient.AmbientModeSupport;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wearable.DataClient;
@@ -33,7 +37,7 @@ import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
-public class MainActivity extends WearableActivity{
+public class MainActivity extends WearableActivity {
     private HashMap<Integer, Button> timeButtons = new HashMap<Integer, Button>();
     private static final String RECORD_KEY = "dev.feiyang.sereneme.records";
     private static final String TAG = "SereneME: ";
@@ -49,14 +53,22 @@ public class MainActivity extends WearableActivity{
 
     private double mMeditationSessionScore = 0;
 
+    private Vibrator vibrator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setAmbientEnabled();
+
         // check sensor permission
         if (checkSelfPermission("android.permission.BODY_SENSORS") == PackageManager.PERMISSION_DENIED)
             requestPermissions(new String[]{"android.permission.BODY_SENSORS"}, 66);
+
+        if (checkSelfPermission("android.permission.VIBRATE") == PackageManager.PERMISSION_DENIED)
+            requestPermissions(new String[]{"android.permission.VIBRATE"}, 67);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         // data synchronization setup
         mDataClient = Wearable.getDataClient(this);
@@ -102,16 +114,19 @@ public class MainActivity extends WearableActivity{
                 roundTimerView.setDigitTimerText(getResources().getString(R.string.complete));
                 reset.setVisibility(View.VISIBLE);
                 stopSensors();
+                vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
 
                 MeditationRecord record = new MeditationRecord();
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
                 LocalDateTime now = LocalDateTime.now();
                 record.mDate = dtf.format(now);
                 record.mScore = (int) (mMeditationSessionScore / minutes);
                 if(record.mScore <= 0){
                     record.mScore = 1;
                 }
-                record.mID = (int) (Math.random() * 10000000);
+                DateTimeFormatter dID = DateTimeFormatter.ofPattern("yyyyDDDHHmmss");
+                LocalDateTime timeID = LocalDateTime.now();
+                record.mID = Long.parseLong(dID.format(timeID));
                 record.mLength = (int) minutes;
 
                 PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/meditation_records");
@@ -213,10 +228,7 @@ public class MainActivity extends WearableActivity{
                         Log.d(TAG,"Meditation Score Deduction due to Accelerometer Event: " + Math.min(x, 5) / 5.0);
                         mMeditationSessionScore -= Math.max(z, 5) / 5.0;
                     }
-
                 }
-
-
             }
 
             @Override
@@ -263,4 +275,7 @@ public class MainActivity extends WearableActivity{
 
         Log.d("SereneME: ", "Sensor Stopped");
     }
+
+
+
 }

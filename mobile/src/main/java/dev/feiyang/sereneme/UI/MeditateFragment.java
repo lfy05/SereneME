@@ -106,13 +106,16 @@ public class MeditateFragment extends Fragment{
                         .setPosition(-50f, mKonfettiView.getWidth() + 50f, -50f, -50f)
                         .streamFor(300, 5000L);
                 mRoundTimer.setDigitTimerText(getContext().getString(R.string.countdownComplete));
+
+                DateTimeFormatter dID = DateTimeFormatter.ofPattern("yyyyDDDHHmmss");
+                LocalDateTime timeID = LocalDateTime.now();
                 MeditationRecord record = new MeditationRecord();
-                record.mID = (int) (Math.random() * 10000000);
+                record.mID = Long.parseLong(dID.format(timeID));
                 record.mLength = (int) minutes;
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM-dd-yyyy");
                 LocalDateTime now = LocalDateTime.now();
                 record.mDate = dtf.format(now);
-                record.mScore = 100;
+                record.mScore = (int) minutes;
                 mJournalVM.addLocalRecords(record);
             }
         });
