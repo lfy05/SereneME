@@ -7,4 +7,12 @@
     <string name="msgRegardingKnob">Or you can also touch the knob to set the timer</string>
     <string name="start">Start</string>
     <string name="focusScore">Focus Score: </string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="reminder_header">Reminder</string>
+    <string name="daily_reminder_title">Daily Meditation Reminder</string>
+    <string name="reminder_message">Remind me to meditate everyday</string>
+    <string name="reminder_auto_description">You\'ll be notified at the time you normally meditate based on your records</string>
+    <string name="reminder_manual_description">You\'ll be notified at the following time</string>
+
 </resources>

@@ -50,7 +50,6 @@
         android:background="@drawable/round_button"
         android:text="10"
         app:layout_constraintEnd_toStartOf="@+id/time15"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/time5"
         app:layout_constraintTop_toBottomOf="@+id/roundTimer" />
 
@@ -85,7 +84,6 @@
         android:background="@drawable/round_button"
         android:text="45"
         app:layout_constraintEnd_toStartOf="@+id/time60"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/time30"
         app:layout_constraintTop_toBottomOf="@+id/time10" />
 

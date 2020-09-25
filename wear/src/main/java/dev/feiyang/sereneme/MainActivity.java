@@ -151,7 +151,8 @@ public class MainActivity extends WearableActivity {
             public boolean onGenericMotion(View view, MotionEvent motionEvent) {
                 // check if it is rotary input
                 if (motionEvent.getAction() == MotionEvent.ACTION_SCROLL
-                        && RotaryEncoder.isFromRotaryEncoder(motionEvent)){
+                        && RotaryEncoder.isFromRotaryEncoder(motionEvent)
+                        && !roundTimerView.getIsTimerOn()){
                     setExtraElementVisibility(false);
                     float delta = (float) (-RotaryEncoder.getRotaryAxisValue(motionEvent) * 0.7);
                     roundTimerView.updateKnobPosition(roundTimerView.getKnobSweepAngle() +

@@ -46,6 +46,7 @@ public class RoundTimer extends View {
     private Paint mKnobPaint;
     private Paint mSweepArcPaint;
 
+
     private CountDownTimer mCountDownTimer;
     public interface CountDownCompleteListener{
         public void onCountDownComplete(double minutes);
@@ -292,6 +293,10 @@ public class RoundTimer extends View {
 
     public double getKnobSweepAngle() {
         return mKnobSweepAngle;
+    }
+
+    public boolean getIsTimerOn() {
+        return mIsTimerOn;
     }
 }
 

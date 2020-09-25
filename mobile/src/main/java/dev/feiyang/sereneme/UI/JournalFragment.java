@@ -68,6 +68,7 @@ public class JournalFragment extends Fragment{
         this.mMeditationScoreChart.setNoDataText("No Records");
         this.mMeditationScoreChart.setNoDataTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
         this.mMeditationScoreChart.getLegend().setEnabled(false);
+        this.mMeditationScoreChart.setScaleEnabled(false);
         this.mMeditationScoreChart.invalidate();
 
         XAxis xAxis = mMeditationScoreChart.getXAxis();
@@ -103,7 +104,10 @@ public class JournalFragment extends Fragment{
                 if(entries.size() > 0){
                     LineDataSet dataSet = new LineDataSet(entries, "Score");
                     dataSet.setLineWidth(3);
+                    dataSet.setColor(getContext().getColor(R.color.colorPrimaryDark));
+                    dataSet.setCircleColor(getContext().getColor(R.color.colorPrimaryDark));
                     LineData lineData = new LineData(dataSet);
+                    lineData.setHighlightEnabled(false);
                     mMeditationScoreChart.setData(lineData);
                     mMeditationScoreChart.invalidate();
                     return;

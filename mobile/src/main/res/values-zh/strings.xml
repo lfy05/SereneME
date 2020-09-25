@@ -8,4 +8,10 @@
     <string name="msgRegardingKnob">旋转计时器的圆点也可以设置时间</string>
     <string name="start">开始</string>
     <string name="focusScore">专心指数: </string>
+    <string name="title_activity_settings">设置</string>
+    <string name="reminder_header">提醒</string>
+    <string name="reminder_message">每天提醒我冥想</string>
+    <string name="reminder_auto_description">自动在你最经常冥想的时间段提醒你</string>
+    <string name="reminder_manual_description">在下面的时间段提醒你</string>
+    <string name="daily_reminder_title">每日冥想提示</string>
 </resources>
