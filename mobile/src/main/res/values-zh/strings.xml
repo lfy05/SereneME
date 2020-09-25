@@ -11,7 +11,11 @@
     <string name="title_activity_settings">设置</string>
     <string name="reminder_header">提醒</string>
     <string name="reminder_message">每天提醒我冥想</string>
-    <string name="reminder_auto_description">自动在你最经常冥想的时间段提醒你</string>
-    <string name="reminder_manual_description">在下面的时间段提醒你</string>
+    <string name="reminder_auto_summary">自动在你最经常冥想的时间段提醒你</string>
+    <string name="reminder_manual_summary">在下面的时间段提醒你</string>
     <string name="daily_reminder_title">每日冥想提示</string>
+    <string name="reminder_manual_set_time_description">设置提醒时间</string>
+    <string name="reminder_manual_time_summary">于每日%2d:%2d提醒</string>
+    <string name="automatic_reminder_description">自动提醒</string>
+    <string name="no_reminder_summary">你将不会被提醒</string>
 </resources>

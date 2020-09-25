@@ -4,12 +4,19 @@
     <PreferenceCategory
         app:key="notification_category"
         app:title="@string/reminder_header" >
+
         <SwitchPreference
             android:defaultValue="false"
             android:key="reminder"
             android:summary="@string/reminder_message"
             android:title="@string/daily_reminder_title"
             app:icon="@drawable/meditation" />
+
+        <Preference
+            app:key = "set_reminder_time_preference"
+            app:title = "@string/reminder_manual_set_time_description"
+            app:dependency="reminder">
+        </Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>

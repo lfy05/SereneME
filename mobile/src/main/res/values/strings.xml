@@ -12,7 +12,11 @@
     <string name="reminder_header">Reminder</string>
     <string name="daily_reminder_title">Daily Meditation Reminder</string>
     <string name="reminder_message">Remind me to meditate everyday</string>
-    <string name="reminder_auto_description">You\'ll be notified at the time you normally meditate based on your records</string>
-    <string name="reminder_manual_description">You\'ll be notified at the following time</string>
+    <string name="no_reminder_summary">You won\'t be reminded</string>
+    <string name="automatic_reminder_description">Automatic Daily Reminder</string>
+    <string name="reminder_auto_summary">You\'ll be notified at the time you normally meditate based on your records</string>
+    <string name="reminder_manual_summary">You\'ll be notified at the following time</string>
+    <string name="reminder_manual_set_time_description">Set time of reminder</string>
+    <string name="reminder_manual_time_summary">"Remind you at %02d:%02d "</string>
 
 </resources>
