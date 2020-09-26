@@ -6,12 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import dev.feiyang.sereneme.R;
 
@@ -53,21 +57,30 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         sharedPreferenceEditor.putInt("reminder_minute", minuteOfHour);
                         sharedPreferenceEditor.commit();
 
-                        AlarmManager alarmManager =
-                                (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        calendar.set(Calendar.MINUTE, minuteOfHour);
+//                        AlarmManager alarmManager =
+//                                (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+                        updateSetTimerPreferenceSummary();
+                        Calendar userSetCalendar = Calendar.getInstance();
+                        userSetCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        userSetCalendar.set(Calendar.MINUTE, minuteOfHour);
 
                         Intent intent = new Intent(getContext(), ReminderBroadcastReceiver.class);
                         intent.setAction("android.intent.action.MED_REMINDER_NOTIFICATION");
                         PendingIntent notificationIntent = PendingIntent.getBroadcast(getContext(),
                                 0, intent, 0);
 
-                        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                                calendar.getTimeInMillis(),
-                                notificationIntent);
+//                        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+//                                userSetCalendar.getTimeInMillis(),
+//                                notificationIntent);
+                        PeriodicWorkRequest workRequest =
+                                new PeriodicWorkRequest.Builder(NotificationWorker.class,
+                                        1, TimeUnit.DAYS)
+                                .setInitialDelay(userSetCalendar.getTimeInMillis() -
+                                        Calendar.getInstance().getTimeInMillis(), TimeUnit.MILLISECONDS)
+                                .build();
+
+                        WorkManager.getInstance(getContext()).enqueue(workRequest);
+                        Log.d("SereneME ", "Notification Work Enqueued");
                     }
                 });
                 timePickerDialog.show(getParentFragmentManager(), "Time Picker");
