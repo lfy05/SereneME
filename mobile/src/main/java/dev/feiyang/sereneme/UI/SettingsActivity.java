@@ -1,16 +1,11 @@
 package dev.feiyang.sereneme.UI;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartFragmentCallback;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
+
 import android.view.View;
 
 import dev.feiyang.sereneme.R;
@@ -44,12 +39,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         // create a notification channel
         String description = "SereneME meditation reminder notification channel";
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "SereneME Reminder Notification",
-                NotificationManager.IMPORTANCE_DEFAULT);
-        channel.setDescription("This channel is used for sending meditation reminder notifications");
+        NotificationChannel channel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(CHANNEL_ID, "SereneME Reminder Notification",
+                    NotificationManager.IMPORTANCE_DEFAULT);
 
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
+            channel.setDescription("This channel is used for sending meditation reminder notifications");
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
-
 }

@@ -61,6 +61,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         calendar.set(Calendar.MINUTE, minuteOfHour);
 
                         Intent intent = new Intent(getContext(), ReminderBroadcastReceiver.class);
+                        intent.setAction("android.intent.action.MED_REMINDER_NOTIFICATION");
                         PendingIntent notificationIntent = PendingIntent.getBroadcast(getContext(),
                                 0, intent, 0);
 
