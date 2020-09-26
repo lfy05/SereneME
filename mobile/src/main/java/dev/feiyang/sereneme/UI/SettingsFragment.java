@@ -57,21 +57,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         sharedPreferenceEditor.putInt("reminder_minute", minuteOfHour);
                         sharedPreferenceEditor.commit();
 
-//                        AlarmManager alarmManager =
-//                                (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
                         updateSetTimerPreferenceSummary();
                         Calendar userSetCalendar = Calendar.getInstance();
                         userSetCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         userSetCalendar.set(Calendar.MINUTE, minuteOfHour);
 
-                        Intent intent = new Intent(getContext(), ReminderBroadcastReceiver.class);
-                        intent.setAction("android.intent.action.MED_REMINDER_NOTIFICATION");
-                        PendingIntent notificationIntent = PendingIntent.getBroadcast(getContext(),
-                                0, intent, 0);
-
-//                        alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-//                                userSetCalendar.getTimeInMillis(),
-//                                notificationIntent);
+                        // Create periodic work request that triggers the notification
                         PeriodicWorkRequest workRequest =
                                 new PeriodicWorkRequest.Builder(NotificationWorker.class,
                                         1, TimeUnit.DAYS)
