@@ -8,6 +8,7 @@
     <string name="start">Start</string>
     <string name="focusScore">Focus Score: </string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="preferences">Preferences</string>
 
     <string name="reminder_header">Reminder</string>
     <string name="daily_reminder_title">Daily Meditation Reminder</string>
@@ -19,4 +20,6 @@
     <string name="reminder_manual_set_time_description">Set time of reminder</string>
     <string name="reminder_manual_time_summary">"Remind you at %02d:%02d "</string>
 
+    <string name="reminder_notification_title">SereneME Meditation Reminder</string>
+    <string name="reminder_notification_content">It\'s time to meditate!</string>
 </resources>

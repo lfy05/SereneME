@@ -15,7 +15,10 @@
     <string name="reminder_manual_summary">在下面的时间段提醒你</string>
     <string name="daily_reminder_title">每日冥想提示</string>
     <string name="reminder_manual_set_time_description">设置提醒时间</string>
-    <string name="reminder_manual_time_summary">于每日%2d:%2d提醒</string>
+    <string name="reminder_manual_time_summary">于每日%02d:%02d提醒</string>
     <string name="automatic_reminder_description">自动提醒</string>
     <string name="no_reminder_summary">你将不会被提醒</string>
+    <string name="preferences">选项</string>
+    <string name="reminder_notification_title">静 冥想提醒</string>
+    <string name="reminder_notification_content">该冥想了，亲~~</string>
 </resources>

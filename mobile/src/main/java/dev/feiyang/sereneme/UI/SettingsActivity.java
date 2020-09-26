@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartFragmentCallback;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -16,6 +18,7 @@ import dev.feiyang.sereneme.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding binding;
+    private String CHANNEL_ID = "SereneME Reminder";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(binding.settingsToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(R.string.preferences);
         binding.settingsToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,6 +41,15 @@ public class SettingsActivity extends AppCompatActivity {
                 .beginTransaction()
                 .add(R.id.settingsFragmentContainer, new SettingsFragment())
                 .commit();
+
+        // create a notification channel
+        String description = "SereneME meditation reminder notification channel";
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "SereneME Reminder Notification",
+                NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription("This channel is used for sending meditation reminder notifications");
+
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
 }
