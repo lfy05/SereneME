@@ -6,9 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityEventSource;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -167,6 +170,8 @@ public class RoundTimer extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+
         if (this.mIsTimerOn)
             return false;
         switch (event.getAction()){
@@ -297,6 +302,23 @@ public class RoundTimer extends View {
 
     public boolean getIsTimerOn() {
         return mIsTimerOn;
+    }
+
+    @Override
+    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
+
+        CharSequence text = "Round Timer View";
+        if (!TextUtils.isEmpty(text)){
+            event.getText().add(text);
+            return true;
+        }
+        return super.dispatchPopulateAccessibilityEvent(event);
+    }
+
+    @Override
+    public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
+        event.getText().add("Round Timer View");
+        super.onInitializeAccessibilityEvent(event);
     }
 }
 

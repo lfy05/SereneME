@@ -82,7 +82,7 @@ public class MeditateFragment extends Fragment{
                 @Override
                 public void onClick(View view) {
                     Button btn = (Button) view;
-                    mRoundTimer.startTimer(Double.parseDouble((String) btn.getText()));
+                    mRoundTimer.startTimer(Double.parseDouble((String) "" + btn.getText()));
                     setExtraElementVisibility(false);
                     Toast.makeText(getContext(),
                             "A meditation of " + btn.getText() + " has started ",
