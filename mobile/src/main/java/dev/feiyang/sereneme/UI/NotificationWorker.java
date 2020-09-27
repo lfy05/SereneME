@@ -24,6 +24,8 @@ public class NotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
+        // content intent for the notification. With this, user can click the notification and gets
+        // redirected to the MainActivity
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(getApplicationContext(),
                 200, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);

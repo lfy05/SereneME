@@ -20,8 +20,8 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name="dev.feiyang.sereneme.UI.ReminderBroadcastReceiver"
-            android:exported="true"/>
+        <service android:name=".Data.MRecordsAnalystService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
     </application>
 </manifest>
